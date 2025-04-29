@@ -1,14 +1,61 @@
-import { StyleSheet } from 'react-native';
+import React from "react";
+import {
+  StyleSheet,
+  FlatList,
+  View,
+  Image,
+  Text,
+  Dimensions,
+} from "react-native";
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+const boards = [
+  {
+    id: "1",
+    title: "Trip to Tahoe",
+    image: "https://via.placeholder.com/300x400",
+  },
+  {
+    id: "2",
+    title: "Memories with Chelsea",
+    image: "https://via.placeholder.com/300x500",
+  },
+  {
+    id: "3",
+    title: "Last November",
+    image: "https://via.placeholder.com/300x300",
+  },
+  {
+    id: "4",
+    title: "Stanford",
+    image: "https://via.placeholder.com/300x450",
+  },
+  {
+    id: "5",
+    title: "Memories with Emily",
+    image: "https://via.placeholder.com/300x350",
+  },
+];
 
-export default function TabTwoScreen() {
+const screenWidth = Dimensions.get("window").width;
+const columnWidth = screenWidth / 2 - 15; // Two columns with spacing
+
+export default function BoardsScreen() {
+  const renderBoard = ({ item }: { item: (typeof boards)[0] }) => (
+    <View style={styles.boardContainer}>
+      <Image source={{ uri: item.image }} style={styles.boardImage} />
+      <Text style={styles.boardTitle}>{item.title}</Text>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
+      <FlatList
+        data={boards}
+        renderItem={renderBoard}
+        keyExtractor={(item) => item.id}
+        numColumns={2} // Two columns for the grid
+        contentContainerStyle={styles.grid}
+      />
     </View>
   );
 }
@@ -16,16 +63,28 @@ export default function TabTwoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  grid: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  boardContainer: {
+    flex: 1,
+    margin: 5,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  boardImage: {
+    width: columnWidth,
+    height: columnWidth * 1.5, // Adjust height for a Pinterest-style look
+    resizeMode: "cover",
+  },
+  boardTitle: {
+    padding: 10,
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
