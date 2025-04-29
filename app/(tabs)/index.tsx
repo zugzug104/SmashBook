@@ -1,5 +1,14 @@
 import React from "react";
-import { StyleSheet, FlatList, Image, View, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  FlatList,
+  Image,
+  View,
+  Dimensions,
+  Pressable,
+} from "react-native";
+import { FontAwesome } from "@expo/vector-icons"; // Import FontAwesome icons
+import { useRouter } from "expo-router"; // Import the router for navigation
 
 const photos = [
   {
@@ -30,7 +39,9 @@ const numColumns = 3; // Number of columns
 const photoSize = screenWidth / numColumns - 10; // Calculate dynamic size with spacing
 
 export default function TabOneScreen() {
-  const renderPhoto = ({ item }: { item: (typeof photos)[0] }) => (
+  const router = useRouter(); // Initialize the router
+
+  const renderPhoto = ({ item }) => (
     <View style={styles.photoContainer}>
       <Image source={{ uri: item.uri }} style={styles.photo} />
     </View>
@@ -38,6 +49,23 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Header with Profile and Search Buttons */}
+      <View style={styles.header}>
+        <Pressable
+          style={styles.profileButton}
+          onPress={() => console.log("Profile button pressed")}
+        >
+          <FontAwesome name="user" size={20} color="#fff" />
+        </Pressable>
+        <Pressable
+          style={styles.searchButton}
+          onPress={() => router.push("/search")} // Navigate to the search screen
+        >
+          <FontAwesome name="search" size={20} color="#fff" />
+        </Pressable>
+      </View>
+
+      {/* Image Grid */}
       <FlatList
         data={photos}
         renderItem={renderPhoto}
@@ -53,6 +81,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+  },
+  profileButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#007BFF",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  searchButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#007BFF",
+    justifyContent: "center",
+    alignItems: "center",
   },
   grid: {
     padding: 5, // Add padding for the grid
