@@ -151,6 +151,14 @@ export default function TabOneScreen() {
         onViewableItemsChanged={onViewRef.current}
         viewabilityConfig={viewConfigRef.current}
       />
+
+      {/* Floating Circle Button */}
+      <Pressable
+        style={styles.floatingButton}
+        onPress={() => router.push("/add-content")} // Navigate to the new screen
+      >
+        <FontAwesome name="plus" size={24} color="#fff" />
+      </Pressable>
     </View>
   );
 }
@@ -227,5 +235,21 @@ const styles = StyleSheet.create({
     height: undefined,
     aspectRatio: 1,
     borderRadius: 10,
+  },
+  floatingButton: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "#007BFF",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
   },
 });
