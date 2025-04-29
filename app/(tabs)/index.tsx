@@ -1,14 +1,16 @@
 import React from "react";
 import {
   StyleSheet,
-  FlatList,
+  SectionList,
   Image,
   View,
-  Dimensions,
   Pressable,
+  Text,
+  Dimensions,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons"; // Import FontAwesome icons
-import { useRouter } from "expo-router"; // Import the router for navigation
+import { WebView } from "react-native-webview";
+import { FontAwesome } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 const photos = [
   {
@@ -34,12 +36,68 @@ const photos = [
   },
 ];
 
-const screenWidth = Dimensions.get("window").width; // Get screen width
-const numColumns = 3; // Number of columns
-const photoSize = screenWidth / numColumns - 10; // Calculate dynamic size with spacing
+function parseTimestampToDateLabel(timestamp) {
+  const dateOnly = timestamp.split(" ")[0];
+  const [year, month, day] = dateOnly.split("-").map(Number);
+  const dateObj = new Date(year, month - 1, day);
+  if (isNaN(dateObj.getTime())) {
+    console.error("Invalid parsed date:", timestamp);
+    return "Unknown Date";
+  }
+  return dateObj.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+}
+
+function getSpotifyEmbedUrl(dateLabel) {
+  if (dateLabel.includes("Apr 28")) {
+    return "https://open.spotify.com/embed/track/2fRoKHW3lzNUKIUTade8nL"; // 745
+  } else if (dateLabel.includes("Apr 27")) {
+    return "https://open.spotify.com/embed/track/0I3q5fE6wg7LIfHGngUTnV"; // Someone to Call My Lover
+  }
+  return null;
+}
+
+
+function groupPhotosByDate(photos) {
+  const groups = {};
+  photos.forEach((photo) => {
+    const dateKey = parseTimestampToDateLabel(photo.timestamp);
+    if (!groups[dateKey]) {
+      groups[dateKey] = {
+        title: dateKey,
+        data: [],
+        spotifyEmbedUrl: getSpotifyEmbedUrl(dateKey),
+      };
+    }
+    groups[dateKey].data.push(photo);
+  });
+  console.log("Grouped Sections:", Object.values(groups));
+  return Object.values(groups);
+}
+
+const screenWidth = Dimensions.get("window").width;
+const photoSize = screenWidth - 20;
 
 export default function TabOneScreen() {
-  const router = useRouter(); // Initialize the router
+  const [currentDate, setCurrentDate] = React.useState(
+    parseTimestampToDateLabel(photos[0].timestamp)
+  );
+  const router = useRouter();
+  const sections = React.useMemo(() => groupPhotosByDate(photos), []);
+
+  const onViewRef = React.useRef(({ viewableItems }) => {
+    const firstVisible = viewableItems.find((item) => item.section);
+    if (firstVisible?.section?.title) {
+      setCurrentDate(firstVisible.section.title);
+    }
+  });
+
+  const viewConfigRef = React.useRef({
+    viewAreaCoveragePercentThreshold: 50,
+  });
 
   const renderPhoto = ({ item }) => (
     <View style={styles.photoContainer}>
@@ -49,7 +107,6 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header with Profile and Search Buttons */}
       <View style={styles.header}>
         <Pressable
           style={styles.profileButton}
@@ -59,19 +116,44 @@ export default function TabOneScreen() {
         </Pressable>
         <Pressable
           style={styles.searchButton}
-          onPress={() => router.push("/search")} // Navigate to the search screen
+          onPress={() => router.push("/search")}
         >
           <FontAwesome name="search" size={20} color="#fff" />
         </Pressable>
       </View>
 
-      {/* Image Grid */}
-      <FlatList
-        data={photos}
-        renderItem={renderPhoto}
+      <View style={styles.dateContainer}>
+        <Text style={styles.today}>Today</Text>
+        <Text style={styles.date}>{currentDate}</Text>
+      </View>
+
+      <SectionList
+        sections={sections}
         keyExtractor={(item) => item.id}
-        numColumns={numColumns} // Display photos in a grid with 3 columns
-        contentContainerStyle={styles.grid}
+        renderItem={({ item }) => renderPhoto({ item })}
+        renderSectionHeader={({ section }) => (
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionHeaderText}>{section.title}</Text>
+            {section.spotifyEmbedUrl ? (
+              <>
+                <Text style={{ color: "#1DB954" }}>
+                  Embedding: {section.spotifyEmbedUrl}
+                </Text>
+                <View style={styles.spotifyContainer}>
+                  <WebView
+                    source={{ uri: section.spotifyEmbedUrl }}
+                    style={styles.spotifyPlayer}
+                    allowsInlineMediaPlayback
+                    mediaPlaybackRequiresUserAction={false}
+                    scrollEnabled={false}
+                  />
+                </View>
+              </>
+            ) : null}
+          </View>
+        )}
+        onViewableItemsChanged={onViewRef.current}
+        viewabilityConfig={viewConfigRef.current}
       />
     </View>
   );
@@ -104,17 +186,49 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  grid: {
-    padding: 5, // Add padding for the grid
+  dateContainer: {
+    paddingHorizontal: 15,
+    paddingBottom: 10,
+  },
+  today: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  date: {
+    fontSize: 14,
+    color: "#666",
+  },
+  sectionHeader: {
+    width: "100%",
+    backgroundColor: "#fff",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginTop: 10,
+  },
+  sectionHeaderText: {
+    fontWeight: "600",
+    fontSize: 16,
+    color: "#555",
+    marginBottom: 5,
+  },
+  spotifyContainer: {
+    height: 100,
+    width: "100%",
+    borderRadius: 8,
+    overflow: "hidden",
+    marginBottom: 10,
+    backgroundColor: "#000",
+  },
+  spotifyPlayer: {
+    flex: 1,
   },
   photoContainer: {
-    flex: 1,
-    margin: 2, // Add small margin between photos
-    alignItems: "center",
+    padding: 10,
   },
   photo: {
-    width: photoSize, // Dynamic width based on screen size
-    height: photoSize, // Dynamic height to maintain square shape
+    width: "100%",
+    height: undefined,
+    aspectRatio: 1,
     borderRadius: 10,
   },
 });
