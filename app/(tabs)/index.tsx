@@ -60,7 +60,6 @@ function getSpotifyEmbedUrl(dateLabel) {
   return null;
 }
 
-
 function groupPhotosByDate(photos) {
   const groups = {};
   photos.forEach((photo) => {
@@ -74,7 +73,6 @@ function groupPhotosByDate(photos) {
     }
     groups[dateKey].data.push(photo);
   });
-  console.log("Grouped Sections:", Object.values(groups));
   return Object.values(groups);
 }
 
@@ -132,26 +130,24 @@ export default function TabOneScreen() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => renderPhoto({ item })}
         renderSectionHeader={({ section }) => (
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionHeaderText}>{section.title}</Text>
-            {section.spotifyEmbedUrl ? (
-              <>
-                <Text style={{ color: "#1DB954" }}>
-                  Embedding: {section.spotifyEmbedUrl}
-                </Text>
-                <View style={styles.spotifyContainer}>
-                  <WebView
-                    source={{ uri: section.spotifyEmbedUrl }}
-                    style={styles.spotifyPlayer}
-                    allowsInlineMediaPlayback
-                    mediaPlaybackRequiresUserAction={false}
-                    scrollEnabled={false}
-                  />
-                </View>
-              </>
-            ) : null}
+          <View style={styles.sectionHeaderWrapper}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionHeaderText}>{section.title}</Text>
+            </View>
+            {section.spotifyEmbedUrl && (
+              <View style={styles.spotifyContainer}>
+                <WebView
+                  source={{ uri: section.spotifyEmbedUrl }}
+                  style={styles.spotifyPlayer}
+                  allowsInlineMediaPlayback
+                  mediaPlaybackRequiresUserAction={false}
+                  scrollEnabled={false}
+                />
+              </View>
+            )}
           </View>
         )}
+        stickySectionHeadersEnabled={false}
         onViewableItemsChanged={onViewRef.current}
         viewabilityConfig={viewConfigRef.current}
       />
@@ -198,12 +194,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#666",
   },
-  sectionHeader: {
-    width: "100%",
+  sectionHeaderWrapper: {
     backgroundColor: "#fff",
-    paddingVertical: 5,
+    paddingBottom: 5,
+  },
+  sectionHeader: {
     paddingHorizontal: 10,
-    marginTop: 10,
+    paddingTop: 10,
   },
   sectionHeaderText: {
     fontWeight: "600",
@@ -216,8 +213,8 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 8,
     overflow: "hidden",
-    marginBottom: 10,
     backgroundColor: "#000",
+    marginBottom: 10,
   },
   spotifyPlayer: {
     flex: 1,
