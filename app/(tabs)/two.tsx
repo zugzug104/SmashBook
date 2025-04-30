@@ -11,28 +11,23 @@ import {
 const boards = [
   {
     id: "1",
-    title: "Trip to Tahoe",
-    image: "https://via.placeholder.com/300x400",
+    title: "2010!!!",
+    image: "https://upload.wikimedia.org/wikipedia/commons/e/e4/2010s_collage_v21.png",
   },
   {
     id: "2",
-    title: "Memories with Chelsea",
-    image: "https://via.placeholder.com/300x500",
+    title: "Raleigh Summer",
+    image: "https://tse1.mm.bing.net/th/id/OIP.p-tniObOQQvGRilOubxWxgHaMF?w=474&h=474&c=7",
   },
   {
     id: "3",
     title: "Last November",
-    image: "https://via.placeholder.com/300x300",
+    image: "https://images.pexels.com/photos/3933404/pexels-photo-3933404.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
     id: "4",
     title: "Stanford",
-    image: "https://via.placeholder.com/300x450",
-  },
-  {
-    id: "5",
-    title: "Memories with Emily",
-    image: "https://via.placeholder.com/300x350",
+    image: "https://images.pexels.com/photos/26600256/pexels-photo-26600256/free-photo-of-memorial-church-in-stanford-in-the-usa.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
 ];
 
