@@ -108,7 +108,7 @@ export default function TabOneScreen() {
       <View style={styles.header}>
         <Pressable
           style={styles.profileButton}
-          onPress={() => console.log("Profile button pressed")}
+          onPress={() => router.push("/profile")}
         >
           <FontAwesome name="user" size={20} color="#fff" />
         </Pressable>
