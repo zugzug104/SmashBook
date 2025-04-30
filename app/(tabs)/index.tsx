@@ -15,21 +15,21 @@ import { useRouter } from "expo-router";
 const photos = [
   {
     id: "1",
-    uri: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Young_girl_smiling_in_sunshine_%282%29.jpg",
+    uri: "https://tse1.mm.bing.net/th/id/OIP.p-tniObOQQvGRilOubxWxgHaMF?w=474&h=474&c=7g",
     timestamp: "2025-04-28 10:00 AM",
-    location: "Stanford, CA",
+    location: "Raleigh, NC",
     sharedWith: ["Alice", "Bob"],
   },
   {
     id: "2",
-    uri: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Young_girl_smiling_in_sunshine_%282%29.jpg",
+    uri: "https://images.pexels.com/photos/2446439/pexels-photo-2446439.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     timestamp: "2025-04-27 2:30 PM",
-    location: "Palo Alto, CA",
+    location: "San Francisco, CA",
     sharedWith: ["Charlie"],
   },
   {
     id: "3",
-    uri: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Young_girl_smiling_in_sunshine_%282%29.jpg",
+    uri: "https://images.pexels.com/photos/26600256/pexels-photo-26600256/free-photo-of-memorial-church-in-stanford-in-the-usa.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     timestamp: "2025-04-27 2:30 PM",
     location: "Palo Alto, CA",
     sharedWith: ["Charlie"],
@@ -121,7 +121,6 @@ export default function TabOneScreen() {
       </View>
 
       <View style={styles.dateContainer}>
-        <Text style={styles.today}>Today</Text>
         <Text style={styles.date}>{currentDate}</Text>
       </View>
 
