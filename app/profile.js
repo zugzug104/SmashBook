@@ -6,12 +6,22 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       <Image
         source={{
-          uri: "https://via.placeholder.com/150",
+          uri: "https://images.pexels.com/photos/6706847/pexels-photo-6706847.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
         }}
         style={styles.profileImage}
       />
-      <Text style={styles.name}>John Doe</Text>
-      <Text style={styles.email}>johndoe@example.com</Text>
+      <Text style={styles.welcomeText}>Welcome, Lauren</Text>
+
+      <View style={styles.statsRow}>
+        <Text style={styles.statItem}>
+          <Text style={styles.statLabel}>Friends </Text>
+          <Text style={styles.statCount}>3</Text>
+        </Text>
+        <Text style={styles.statItem}>
+          <Text style={styles.statLabel}>Boards </Text>
+          <Text style={styles.statCount}>4</Text>
+        </Text>
+      </View>
     </View>
   );
 }
@@ -19,7 +29,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    paddingTop: 80,
     alignItems: "center",
     backgroundColor: "#fff",
   },
@@ -27,15 +37,27 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    marginBottom: 20,
+    marginBottom: 16,
   },
-  name: {
+  welcomeText: {
     fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 10,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 12,
   },
-  email: {
+  statsRow: {
+    flexDirection: "row",
+    gap: 20, // Works in React Native 0.71+; use marginRight for older versions
+  },
+  statItem: {
     fontSize: 16,
-    color: "#666",
+  },
+  statLabel: {
+    color: "#000",
+    fontWeight: "600",
+  },
+  statCount: {
+    color: "#888",
+    fontWeight: "400",
   },
 });
