@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import { WebView } from "react-native-webview";
-import { FontAwesome } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
 const photos = [
@@ -110,13 +110,13 @@ export default function TabOneScreen() {
           style={styles.profileButton}
           onPress={() => router.push("/profile")}
         >
-          <FontAwesome name="user" size={20} color="#fff" />
+          <Ionicons name="person-circle-outline" size={24} color="#fff" />
         </Pressable>
         <Pressable
           style={styles.searchButton}
           onPress={() => router.push("/search")}
         >
-          <FontAwesome name="search" size={20} color="#fff" />
+          <Ionicons name="search" size={24} color="#fff" />
         </Pressable>
       </View>
 
@@ -154,9 +154,9 @@ export default function TabOneScreen() {
       {/* Floating Circle Button */}
       <Pressable
         style={styles.floatingButton}
-        onPress={() => router.push("/add-content")} // Navigate to the new screen
+        onPress={() => router.push("/add-content")}
       >
-        <FontAwesome name="plus" size={24} color="#fff" />
+        <Ionicons name="add" size={24} color="#fff" />
       </Pressable>
     </View>
   );
