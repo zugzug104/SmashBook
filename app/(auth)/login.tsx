@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, SafeAreaView } from 'react-native';
 import { useAuth } from '../../lib/supabase/authContext';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
